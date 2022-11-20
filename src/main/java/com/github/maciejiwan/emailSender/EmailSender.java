@@ -1,4 +1,6 @@
-package com.github.maciejiwan;
+package com.github.maciejiwan.emailSender;
+
+import com.github.maciejiwan.emailSender.exception.SendEmailException;
 
 public abstract class EmailSender {
     protected static final String EMAIL = "";

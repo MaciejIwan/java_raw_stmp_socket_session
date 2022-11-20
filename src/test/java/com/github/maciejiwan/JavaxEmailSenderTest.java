@@ -1,5 +1,9 @@
 package com.github.maciejiwan;
 
+import com.github.maciejiwan.emailSender.Email;
+import com.github.maciejiwan.emailSender.EmailSender;
+import com.github.maciejiwan.emailSender.JavaxEmailSender;
+import com.github.maciejiwan.emailSender.exception.SendEmailException;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -25,9 +29,7 @@ class JavaxEmailSenderTest {
         Email email = new Email("maciejiwan", "Testing Subject", "Test Mail");
 
         //when
-        Throwable thrown = catchThrowable(() -> {
-            javaxEmailSender.sendEmail(email);
-        });
+        Throwable thrown = catchThrowable(() -> javaxEmailSender.sendEmail(email));
 
         // then
         assertThat(thrown)

@@ -1,4 +1,6 @@
-package com.github.maciejiwan;
+package com.github.maciejiwan.emailSender;
+
+import com.github.maciejiwan.emailSender.exception.SendEmailException;
 
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
@@ -6,8 +8,8 @@ import javax.mail.internet.MimeMessage;
 import java.util.Properties;
 
 public class JavaxEmailSender extends EmailSender {
-    private Properties properties;
-    private Session session;
+    private final Properties properties;
+    private final Session session;
 
     public JavaxEmailSender() {
         properties = getProperties();

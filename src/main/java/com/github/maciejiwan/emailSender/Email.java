@@ -1,4 +1,4 @@
-package com.github.maciejiwan;
+package com.github.maciejiwan.emailSender;
 
 import lombok.Data;
 
