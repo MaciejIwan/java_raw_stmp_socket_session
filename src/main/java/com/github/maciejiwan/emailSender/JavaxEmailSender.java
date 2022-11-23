@@ -1,5 +1,6 @@
 package com.github.maciejiwan.emailSender;
 
+import com.github.maciejiwan.emailSender.entity.Email;
 import com.github.maciejiwan.emailSender.exception.SendEmailException;
 
 import javax.mail.*;
@@ -11,16 +12,17 @@ public class JavaxEmailSender extends EmailSender {
     private final Properties properties;
     private final Session session;
 
-    public JavaxEmailSender() {
+    public JavaxEmailSender(String credentialsFilename) {
+        super(credentialsFilename);
         properties = getProperties();
         session = getSession();
     }
 
-    private static Properties getProperties() {
+    private Properties getProperties() {
         Properties properties = new Properties();
 
-        properties.put("mail.smtp.host", SMTP_HOST);
-        properties.put("mail.smtp.port", SMTP_PORT);
+        properties.put("mail.smtp.host", serverCredentials.getSmtpHost());
+        properties.put("mail.smtp.port", serverCredentials.getSmtpPort());
         properties.put("mail.smtp.auth", "true");
         properties.put("mail.smtp.starttls.enable", "true");
         properties.put("mail.smtp.starttls.required", "true");
@@ -34,7 +36,7 @@ public class JavaxEmailSender extends EmailSender {
         return Session.getDefaultInstance(properties, new Authenticator() {
             @Override
             protected PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication(EMAIL, EMAIL_PASSWORD);
+                return new PasswordAuthentication(serverCredentials.getEmail(), serverCredentials.getEmailPassword());
             }
         });
     }
@@ -46,14 +48,13 @@ public class JavaxEmailSender extends EmailSender {
             Transport.send(message);
             System.out.println("Email sent");
         } catch (MessagingException e) {
-            //todo deal with Exception better
             throw new SendEmailException(e.getMessage());
         }
     }
 
     private Message createMessage(Email email) throws MessagingException {
         Message message = new MimeMessage(this.session);
-        message.setFrom(new InternetAddress(EMAIL));
+        message.setFrom(new InternetAddress(email.getAuthorEmail()));
         message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(email.getRecipientEmail()));
         message.setSubject(email.getSubject());
         message.setText(email.getTextContent());
