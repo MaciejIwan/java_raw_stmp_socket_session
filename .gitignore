@@ -40,3 +40,4 @@ build/
 /src/main/java/examples/
 /src/test/java/Examples/
 /src/main/resources/credentials.json
+/emailSender.log

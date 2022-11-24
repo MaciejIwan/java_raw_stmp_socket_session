@@ -49,7 +49,7 @@ public class JavaxEmailSender extends EmailSender {
     @Override
     public void sendEmail(Email email) throws SendEmailException {
         try {
-            Message message = createMessage(email);
+            MimeMessage message = createMessage(email);
             Transport.send(message);
             System.out.println("Email sent");
         } catch (MessagingException e) {
@@ -57,10 +57,10 @@ public class JavaxEmailSender extends EmailSender {
         }
     }
 
-    private Message createMessage(Email email) throws MessagingException {
-        Message message = new MimeMessage(this.session);
+    private MimeMessage createMessage(Email email) throws MessagingException {
+        MimeMessage message = new MimeMessage(this.session);
         message.setFrom(new InternetAddress(email.getAuthorEmail()));
-        message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(email.getRecipientEmail()));
+        message.setRecipients(MimeMessage.RecipientType.TO, InternetAddress.parse(email.getRecipientEmail()));
         message.setSubject(email.getSubject());
         message.setText(email.getTextContent());
         return message;
