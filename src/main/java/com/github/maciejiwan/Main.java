@@ -32,7 +32,7 @@ public class Main {
     }
 
     private static String chooseEmailSender() {
-        return getInput("Choose sender type. \n (1) Javax \n (2) RawSocket \n");
+        return getInput("Choose sender type. \n (1) RawSocket \n (2) Javax \n");
     }
 
     private static void sendEmailBySender(String senderId, Email email) throws SendEmailException {
