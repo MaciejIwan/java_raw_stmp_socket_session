@@ -11,7 +11,7 @@ public
 class Message {
 
     private Properties properties;
-    private final PasswordAuth passwordAuth;
+    private final PasswordAuthenticator passwordAuthenticator;
     private String from;
     private String textContent;
     private String subject;
@@ -25,7 +25,7 @@ class Message {
         this.to = "<" + to + ">";
     }
 
-    public Message(PasswordAuth passwordAuth) {
-        this.passwordAuth = passwordAuth;
+    public Message(PasswordAuthenticator passwordAuthenticator) {
+        this.passwordAuthenticator = passwordAuthenticator;
     }
 }

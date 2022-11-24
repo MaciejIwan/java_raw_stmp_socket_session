@@ -5,7 +5,6 @@ import com.github.maciejiwan.emailSender.entity.MailServerCredentials;
 import com.github.maciejiwan.emailSender.exception.SendEmailException;
 import org.junit.jupiter.api.Test;
 
-
 import static org.assertj.core.api.Assertions.assertThat;
 
 class EmailSenderTest {

@@ -2,7 +2,7 @@ package com.github.maciejiwan.emailSender;
 
 import com.github.maciejiwan.emailSender.entity.Email;
 import com.github.maciejiwan.emailSender.entity.Message;
-import com.github.maciejiwan.emailSender.entity.PasswordAuth;
+import com.github.maciejiwan.emailSender.entity.PasswordAuthenticator;
 import com.github.maciejiwan.emailSender.exception.SendEmailException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,32 +21,32 @@ public class RawEmailSender extends EmailSender {
 
     private static final Logger logger = LoggerFactory.getLogger(RawEmailSender.class);
 
-    private final Transfer transfer;
+    private final serverConnectionHandler serverConnectionHandler;
 
     public RawEmailSender() {
-        this.transfer = new Transfer();
+        this.serverConnectionHandler = new serverConnectionHandler();
     }
 
     @Override
     public void sendEmail(Email email) throws SendEmailException {
         try {
             Message message = createMessage(email, getPasswordAuthentication());
-            transfer.openConnection();
-            transfer.sendMessageToSmtpServer(message);
+            serverConnectionHandler.openConnection();
+            serverConnectionHandler.sendMessageToSmtpServer(message);
         } catch (Exception e) {
             logger.error(e.getMessage());
             throw new SendEmailException(e.getMessage());
         } finally {
-            transfer.closeConnection();
+            serverConnectionHandler.closeConnection();
         }
     }
 
-    private PasswordAuth getPasswordAuthentication() {
-        return new PasswordAuth(getServerCredentials().getEmail(), getServerCredentials().getEmailPassword());
+    private PasswordAuthenticator getPasswordAuthentication() {
+        return new PasswordAuthenticator(getServerCredentials().getEmail(), getServerCredentials().getEmailPassword());
     }
 
-    private Message createMessage(Email email, PasswordAuth passwordAuth) {
-        Message message = new Message(passwordAuth);
+    private Message createMessage(Email email, PasswordAuthenticator passwordAuthenticator) {
+        Message message = new Message(passwordAuthenticator);
 
         message.setFrom(email.getAuthorEmail());
         message.setTo(email.getRecipientEmail());
@@ -56,8 +56,8 @@ public class RawEmailSender extends EmailSender {
         return message;
     }
 
-    class Transfer {
-        private static final Logger logger = LoggerFactory.getLogger(Transfer.class);
+    class serverConnectionHandler {
+        private static final Logger logger = LoggerFactory.getLogger(serverConnectionHandler.class);
         private DataOutputStream dataOutputStream = null;
         private BufferedReader bufferedInputReader = null;
         private SSLSocket sslSocket = null;
@@ -65,7 +65,7 @@ public class RawEmailSender extends EmailSender {
         private static final Pattern statusCodePattern = Pattern.compile("(\\d+).*");
 
 
-        public Transfer() {
+        public serverConnectionHandler() {
         }
 
         void openConnection() throws ConnectException {
@@ -88,8 +88,8 @@ public class RawEmailSender extends EmailSender {
                 sendRequest("EHLO ", getServerCredentials().getSmtpHost(), 9);
 
                 sendRequest("AUTH LOGIN", 1);
-                sendRequest(message.getPasswordAuth().getUsernameAsBase64String(), 1);
-                sendRequest(message.getPasswordAuth().getPasswordAsBase64String(), 1);
+                sendRequest(message.getPasswordAuthenticator().getUsernameAsBase64String(), 1);
+                sendRequest(message.getPasswordAuthenticator().getPasswordAsBase64String(), 1);
 
                 sendRequest("MAIL FROM:", message.getFrom(), 1);
 

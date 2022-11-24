@@ -6,7 +6,7 @@ import lombok.Setter;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 
-public class PasswordAuth {
+public class PasswordAuthenticator {
     @Getter
     @Setter
     private String username;
@@ -15,7 +15,7 @@ public class PasswordAuth {
     @Setter
     private String password;
 
-    public PasswordAuth(String username, String password) {
+    public PasswordAuthenticator(String username, String password) {
         setUsername(username);
         setPassword(password);
     }

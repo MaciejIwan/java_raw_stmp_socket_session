@@ -22,7 +22,7 @@ public class Main {
 
             initSenders();
             Email email = getEmail();
-            String senderId = chooseEmailSender();
+            String senderId = getEmailSenderId();
             sendEmailBySender(senderId, email);
 
         } catch (SendEmailException e) {
@@ -31,7 +31,7 @@ public class Main {
         }
     }
 
-    private static String chooseEmailSender() {
+    private static String getEmailSenderId() {
         return getInput("Choose sender type. \n (1) RawSocket \n (2) Javax \n");
     }
 
