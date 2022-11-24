@@ -136,31 +136,13 @@ public class RawEmailSender extends EmailSender {
         }
 
         public void closeConnection() {
-
-
-            if (dataOutputStream != null) {
-                try {
-                    dataOutputStream.close();
-                    dataOutputStream = null;
-                } catch (IOException e) {
-                }
+            try {
+                sslSocket.close();
+                sslSocket = null;
+            } catch (IOException e) {
+                logger.error(e.getMessage());
             }
 
-            if (bufferedInputReader != null) {
-                try {
-                    bufferedInputReader.close();
-                    bufferedInputReader = null;
-                } catch (IOException e) {
-                }
-            }
-
-            if (sslSocket != null) {
-                try {
-                    sslSocket.close();
-                    sslSocket = null;
-                } catch (IOException e) {
-                }
-            }
             isConnectionOpen = false;
         }
 
