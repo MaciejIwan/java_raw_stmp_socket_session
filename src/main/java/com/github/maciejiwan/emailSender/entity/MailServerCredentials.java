@@ -12,5 +12,5 @@ public class MailServerCredentials {
     private String email;
     private String emailPassword;
     private String smtpHost;
-    private String smtpPort;
+    private Integer smtpPort;
 }

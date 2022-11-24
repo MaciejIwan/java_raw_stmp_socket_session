@@ -12,8 +12,13 @@ public class JavaxEmailSender extends EmailSender {
     private final Properties properties;
     private final Session session;
 
-    public JavaxEmailSender(String credentialsFilename) {
-        super(credentialsFilename);
+    public JavaxEmailSender() {
+        properties = getProperties();
+        session = getSession();
+    }
+
+    public JavaxEmailSender(String credentialsPath) {
+        super(credentialsPath);
         properties = getProperties();
         session = getSession();
     }
@@ -21,8 +26,8 @@ public class JavaxEmailSender extends EmailSender {
     private Properties getProperties() {
         Properties properties = new Properties();
 
-        properties.put("mail.smtp.host", serverCredentials.getSmtpHost());
-        properties.put("mail.smtp.port", serverCredentials.getSmtpPort());
+        properties.put("mail.smtp.host", getServerCredentials().getSmtpHost());
+        properties.put("mail.smtp.port", getServerCredentials().getSmtpPort());
         properties.put("mail.smtp.auth", "true");
         properties.put("mail.smtp.starttls.enable", "true");
         properties.put("mail.smtp.starttls.required", "true");
@@ -36,7 +41,7 @@ public class JavaxEmailSender extends EmailSender {
         return Session.getDefaultInstance(properties, new Authenticator() {
             @Override
             protected PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication(serverCredentials.getEmail(), serverCredentials.getEmailPassword());
+                return new PasswordAuthentication(getServerCredentials().getEmail(), getServerCredentials().getEmailPassword());
             }
         });
     }
